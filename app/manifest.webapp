@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "name": "immunizationui",
+  "description": "Provide UI for Immunization management",
+  "launch_path": "index.html",
+  "icons": {
+    "48": "/img/omrs-button.png"
+  },
+  "developer": {
+    "name": "mhawila",
+    "url": "https://github.com/mhawila/openmrs-owa-immunizationui"
+  },
+  "default_locale": "en",
+    "activities": {
+      "openmrs": {
+        "href": "*"
+      }
+    }
+}

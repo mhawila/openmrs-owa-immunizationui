@@ -1,0 +1,14 @@
+.vscode
+node_modules
+bower_components
+dist
+config.json
+*.log
+webpack.config.js
+**/*.zip
+~/
+coverage
+libs
+.DS_STORE
+package-lock.json
+.idea/
