@@ -1,0 +1,28 @@
+<style>
+    #configurations-table tr:hover {
+        cursor: hand;
+    }
+</style>
+<div>
+    <table id="configurations-table">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        <tr ng-repeat="vaccineConfiguration in vaccineConfigurations track by $index">
+            <td>{{$index + 1}}</td>
+            <td>{{ vaccineConfiguration.name }}</td>
+            <td>{{ vaccineConfiguration.description }}</td>
+            <td class="actions">
+                <a ng-click=""><i class="icon-pencil edit-action"></i></a>
+                <a ng-click=""><i class="icon-remove delete-action"></i></a>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <button ng-click="">Create Configuration</button>
+    </div>
+</div>
+

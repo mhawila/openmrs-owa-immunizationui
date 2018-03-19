@@ -9,4 +9,4 @@
 import angular from 'angular'
 import Main from './main/main'
 
-export default angular.module('main', [ Main.name ])
+export default angular.module('main', [ Main.name ]);
