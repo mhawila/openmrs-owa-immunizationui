@@ -1,0 +1,18 @@
+<div id="body-wrapper">
+    <h2> Create Vaccine Configuration </h2>
+        <form id="new-vaccine-configuration" class="sized-inputs css-form" name="newVaccineConfigurationForm" novalidate>
+            <p>
+                <label for="conf-name">Name</label>
+                <input type="text" id="conf-name" ng-model="vm.newConfiguration.name"/>
+            </p>
+            <p>
+                <label for="conf-description">Description</label>
+                <textarea type="text" id="conf-description" ng-model="vm.newConfiguration.description" />
+            </p>
+            <p>
+                <label>Vaccine Concept</label>
+                <concept-auto-complete required='vm.required' concept='vm.item' on-update='vm.updateConcept(isCorrect, concept)'>
+                </concept-auto-complete>
+            </p>
+        </form>
+</div>

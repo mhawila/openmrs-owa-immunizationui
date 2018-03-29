@@ -1,8 +1,6 @@
-<style>
-    #configurations-table tr:hover {
-        cursor: hand;
-    }
-</style>
+<div>
+    <breadcrumbs-vc-create-component></breadcrumbs-vc-create-component>
+</div>
 <div>
     <table id="configurations-table">
         <tr>
@@ -11,7 +9,7 @@
             <th>Description</th>
             <th>Actions</th>
         </tr>
-        <tr ng-repeat="vaccineConfiguration in vaccineConfigurations track by $index">
+        <tr ng-repeat="vaccineConfiguration in $ctrl.vaccineConfigurations track by $index">
             <td>{{$index + 1}}</td>
             <td>{{ vaccineConfiguration.name }}</td>
             <td>{{ vaccineConfiguration.description }}</td>
@@ -22,7 +20,7 @@
         </tr>
     </table>
     <div>
-        <button ng-click="">Create Configuration</button>
+        <button ng-click="$ctrl.createConfiguration()">Create Configuration</button>
     </div>
 </div>
 

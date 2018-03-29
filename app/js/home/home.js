@@ -2,20 +2,27 @@ import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import '../service/service.module';
 import breadcrumbsComponent from './components/breadcrumbs.component.js';
-import breadcrumbsPatientCreateComponent from './components/breadcrumbsPatientCreate.component';
+import breadcrumbsVcCreateComponent from './components/breadcrumbsVCCreate.component';
 import translateComponent from './components/translate.component.js';
 import headerComponent from './components/header.component.js';
 import vaccineConfigurationManagement from './components/vaccine-configuration-management.component.js';
+import createVaccineConfiguration from './components/create-vaccine-configuration.component'
 import 'openmrs-contrib-uicommons';
 
-let homeModule = angular.module('home', [ uiRouter, 'openmrs-contrib-uicommons', 'service.module'])
+let homeModule = angular.module('home', [ uiRouter, 'openmrs-contrib-uicommons',
+    'openmrs-contrib-uicommons.concept-autoComplete', 'service.module'])
     .config(($stateProvider, $urlRouterProvider) => {
         "ngInject";
         $urlRouterProvider.otherwise('/');
 
         $stateProvider.state('home', {
             url: '/',
-            template: require('./home.html')
+            template: '<vaccine-configuration-management></vaccine-configuration-management>'
+        })
+
+        .state('createVaccineConfiguration', {
+            url: '/vaccineconfiguration/create',
+            template: '<create-vaccine-configuration></create-vaccine-configuration>'
         });
     })
     .config(['$qProvider', function ($qProvider) {
@@ -29,9 +36,10 @@ let homeModule = angular.module('home', [ uiRouter, 'openmrs-contrib-uicommons',
     }])
 
     .component('breadcrumbsComponent', breadcrumbsComponent)
-    .component('breadcrumbsPatientCreateComponent', breadcrumbsPatientCreateComponent)
+    .component('breadcrumbsVcCreateComponent', breadcrumbsVcCreateComponent)
     .component('translateComponent', translateComponent)
     .component('headerComponent', headerComponent)
-    .component('vaccineConfigurationManagement', vaccineConfigurationManagement);
+    .component('vaccineConfigurationManagement', vaccineConfigurationManagement)
+    .component('createVaccineConfiguration', createVaccineConfiguration);
 
 export default homeModule;

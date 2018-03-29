@@ -1,4 +1,5 @@
 import template from '../vaccine-configuration-management.html';
+import 'angular-ui-router';
 
 let vaccineConfigurationComponent = {
   restrict: 'E',
@@ -7,16 +8,21 @@ let vaccineConfigurationComponent = {
   template: template
 };
 
-VaccineConfigurationController.$inject = ['ImmunizationService', '$scope'];
+VaccineConfigurationController.$inject = ['ImmunizationService', '$state' ];
 
-function VaccineConfigurationController(ImmunizationService, $scope) {
-    $scope.vaccineConfigurations = [];
+function VaccineConfigurationController(ImmunizationService, $state) {
+    let vm = this;
+    vm.vaccineConfigurations = [];
+
+    vm.createConfiguration = function() {
+        $state.go('createVaccineConfiguration');
+    };
 
     _fetchVaccineConfigurations();
     // fetch vaccine configuration when this controller is instantiated.
     function _fetchVaccineConfigurations() {
         ImmunizationService.getVaccineConfigurations({v: 'full'}).then(data => {
-            $scope.vaccineConfigurations = data;
+            vm.vaccineConfigurations = data;
         })
         .catch(err => {
             console.error(err);
