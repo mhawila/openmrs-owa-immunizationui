@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "name": "immunizationui",
+  "name": "Immunization UI",
   "description": "Provide UI for Immunization management",
   "launch_path": "index.html",
   "icons": {

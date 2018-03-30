@@ -1,0 +1,50 @@
+<div id="breadcrumbs">
+    <breadcrumbs-vc-view-component></breadcrumbs-vc-view-component>
+</div>
+
+<div id="body-wrapper">
+    <h2> Vaccine Configuration Details For: <strong><i>{{ ::vm.referenceConfiguration.name }} </i></strong></h2>
+    <div class="toast-warning vaccine-container" ng-if="vm.viewModelConfiguration.retired">
+        <p>This Vaccine Configuration is Retired!</p>
+    </div>
+    <div class="toast-error vaccine-container" ng-show="vm.errors.length > 0">
+        <span  ng-repeat="error in vm.errors">{{ error }}</span>
+    </div>
+    <div id="details-table" class="vaccine-container">
+        <table>
+            <tr>
+                <td class="vertical-header">Name</td>
+                <td> {{ vm.viewModelConfiguration.name }} </td>
+            </tr>
+            <tr>
+                <td class="vertical-header">Concept</td>
+                <td>
+                    {{ vm.viewModelConfiguration.concept.display }}
+                    (UUID: {{ vm.viewModelConfiguration.concept.uuid }})
+                </td>
+            </tr>
+            <tr>
+                <td class="vertical-header">Description</td>
+                <td> {{ vm.viewModelConfiguration.description }} </td>
+            </tr>
+            <tr>
+                <td class="vertical-header">Required</td>
+                <td> {{ vm.viewModelConfiguration.numberOfTimes.name }} </td>
+            </tr>
+            <tr ng-if="vm.viewModelConfiguration.numberOfTimes.value > 1 || vm.viewModelConfiguration.intervals.length > 0">
+                <td class="vertical-header">Intervals Between Turns</td>
+                <td>
+                    <span ng-if="vm.viewModelConfiguration.intervals.length === 0" style="color: red">No intervals defined</span>
+                    <span ng-repeat="interval in vm.viewModelConfiguration.intervals">
+                        {{ interval.from }} and {{ interval.to }}: {{ interval.timeValue }} {{ interval.timeUnit }}(s)
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="button-group">
+        <input type="button" value="Modify" class="edit-action" ng-click="vm.editConfiguration()"
+            ng-disabled="vm.viewModelConfiguration.retired"/>
+        <a class="button cancel" ui-sref="home()">Go to Manage</a>
+    </div>
+</div>

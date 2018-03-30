@@ -6,7 +6,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-import angular from 'angular'
-import Main from './main/main'
+import angular from 'angular';
+import Main from './main/main';
 
 export default angular.module('main', [ Main.name ]);

@@ -1,0 +1,54 @@
+<div id="breadcrumbs">
+    <breadcrumbs-vc-edit-component></breadcrumbs-vc-edit-component>
+</div>
+
+<div id="body-wrapper">
+    <h2> Edit Vaccine Configuration: <strong><i>{{ ::vm.referenceConfiguration.name }} </i></strong></h2>
+        <div ng-show="vm.errors.length > 0" class="vaccine-container toast-error">
+            <span ng-repeat="error in vm.errors">{{ error }}</span>
+        </div>
+        <form id="new-vaccine-configuration" class="sized-inputs css-form" name="editVaccineConfigurationForm" ng-init="vm.form=editVaccineConfigurationForm" novalidate>
+            <p>
+                <label for="conf-name">Name</label>
+                <input type="text" id="conf-name" ng-model="vm.configurationToEdit.name" required/>
+            </p>
+            <p>
+                <label>Vaccine Concept</label>
+                <concept-auto-complete concept='vm.configurationToEdit.concept' on-update='vm.updateConcept(isCorrect, concept)'>
+                </concept-auto-complete>
+            </p>
+            <p>
+                <label for="number-of-times">Number of Times Required</label>
+                <select id="number-of-times" ng-model="vm.configurationToEdit.numberOfTimes"
+                        ng-options="time.name for time in vm.times track by time.value"
+                        ng-change="vm.manipulateIntervalSection()" required></select>
+            </p>
+            <p ng-repeat="interval in vm.configurationToEdit.intervals">
+                <label>Time interval between {{interval.from}} and {{interval.to}} time</label>
+                <input type="number" ng-model="vm.configurationToEdit.intervals[$index].timeValue" />
+                <label>Units</label>
+                <select ng-options="unit for unit in vm.units" ng-model="vm.configurationToEdit.intervals[$index].timeUnit"></select>
+            </p>
+
+            <p>
+                <label for="conf-description">Description</label>
+                <textarea type="text" id="conf-description" ng-model="vm.configurationToEdit.description"></textarea>
+            </p>
+
+            <p>
+                <label for="conf-retire">Retire Configuration</label>
+                <input type="checkbox" ng-model="vm.configurationToEdit.retired" ng-change="vm.buttonValue()" id="conf-retire"/>
+                <!--<textarea ng-show="vm.configurationToEdit.retired" ng-model="vm.configurationToEdit.retireReason"-->
+                          <!--placeholder="Enter Retire reason here (required)"-->
+                          <!--ng-required="vm.configurationToEdit.retired"></textarea>-->
+            </p>
+
+            <p class="button-group">
+                <input type="button" value="{{ vm.updateButtonValue }}" class="submitButton confirm right" ng-click="vm.updateConfiguration()"
+                       ng-disabled="editVaccineConfigurationForm.$pristine || editVaccineConfigurationForm.$invalid || vm.editCancelButtonsDisabled"/>
+                <input type="button" class="cancel" ng-click="vm.cancel()" ng-disabled="vm.editCancelButtonsDisabled" value="Cancel"/>
+            </p>
+
+            <!--<div ng-init="vm.setForm(editVaccineConfigurationForm)"></div>-->
+        </form>
+</div>

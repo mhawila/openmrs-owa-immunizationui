@@ -1,0 +1,36 @@
+<div id="breadcrumbs">
+    <breadcrumbs-vc-manage-component></breadcrumbs-vc-manage-component>
+</div>
+
+<div class="clear"></div>
+
+<div id="body-wrapper">
+    <h2> Manage Vaccine Configurations </h2>
+    <div ng-show="$ctrl.errors.length > 0">
+        <span class="toast-error" ng-repeat="error in vm.errors">{{ error }}</span>
+    </div>
+    <div>
+        <!--TODO: Add paging and search to this table -->
+    <table id="configurations-table">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        <tr ng-repeat="vaccineConfiguration in $ctrl.vaccineConfigurations track by $index">
+            <td>{{$index + 1}}</td>
+            <td>{{ vaccineConfiguration.name }}</td>
+            <td>{{ vaccineConfiguration.description }}</td>
+            <td class="actions">
+                <a ng-click="$ctrl.editConfiguration(vaccineConfiguration)"><i class="icon-pencil edit-action"></i></a>
+                <a ng-click="$ctrl.viewConfiguration(vaccineConfiguration)"><i class="icon-eye-open edit-action"></i></a>
+            </td>
+        </tr>
+    </table>
+    </div><br/>
+    <div>
+        <button ng-click="$ctrl.createConfiguration()">Add</button>
+    </div>
+</div>
+

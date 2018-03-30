@@ -2,7 +2,6 @@ var path = require('path');
 
 module.exports = function(config) {
   var webpackConfig = {
-    entry: {},
     devtool: 'inline-source-map',
     module: {
       loaders: [{
@@ -18,15 +17,11 @@ module.exports = function(config) {
         loader: 'style-loader!css-loader'
       }, {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
-        loader: 'url'
+        loader: 'url-loader'
       }, {
         test: /\.html$/,
-        loader: 'html'
+        loader: 'html-loader'
       }],
-    },
-    resolve: {
-      root: path.resolve('./src'),
-      extensions: ['', '.js'],
     }
   };
   config.set({
@@ -45,7 +40,6 @@ module.exports = function(config) {
         'node_modules/angular/angular.js',
         'node_modules/angular-mocks/angular-mocks.js',
         'node_modules/angular-route/angular-route.js',
-        'node_modules/angular-route/angular-route.min.js',
         'test/*.js'
     ],
 

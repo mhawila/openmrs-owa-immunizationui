@@ -1,18 +1,41 @@
+<div id="breadcrumbs">
+    <breadcrumbs-vc-create-component></breadcrumbs-vc-create-component>
+</div>
+
 <div id="body-wrapper">
     <h2> Create Vaccine Configuration </h2>
         <form id="new-vaccine-configuration" class="sized-inputs css-form" name="newVaccineConfigurationForm" novalidate>
             <p>
                 <label for="conf-name">Name</label>
-                <input type="text" id="conf-name" ng-model="vm.newConfiguration.name"/>
-            </p>
-            <p>
-                <label for="conf-description">Description</label>
-                <textarea type="text" id="conf-description" ng-model="vm.newConfiguration.description" />
+                <input type="text" id="conf-name" ng-model="vm.newConfiguration.name" required/>
             </p>
             <p>
                 <label>Vaccine Concept</label>
-                <concept-auto-complete required='vm.required' concept='vm.item' on-update='vm.updateConcept(isCorrect, concept)'>
+                <concept-auto-complete required='vm.required' concept='vm.newConfiguration.concept' on-update='vm.updateConcept(isCorrect, concept)'>
                 </concept-auto-complete>
+            </p>
+            <p>
+                <label for="number-of-times">Number of Times Required</label>
+                <select id="number-of-times" ng-model="vm.newConfiguration.numberOfTimes"
+                        ng-options="time.name for time in vm.times track by time.value"
+                        ng-change="vm.updateIntervalsSection()" required></select>
+            </p>
+            <p ng-repeat="block in vm.intervalBlocks">
+                <label>Time interval between {{block.from}} and {{block.to}}</label>
+                <input type="number" ng-model="vm.newConfiguration.intervals[$index].timeValue" />
+                <label>Units</label>
+                <select ng-options="unit for unit in vm.units" ng-model="vm.newConfiguration.intervals[$index].timeUnit"></select>
+            </p>
+
+            <p>
+                <label for="conf-description">Description</label>
+                <textarea type="text" id="conf-description" ng-model="vm.newConfiguration.description"></textarea>
+            </p>
+
+            <p class="button-group">
+                <input type="button" value="Save" class="submitButton confirm right" ng-click="vm.saveConfiguration()"
+                       ng-disabled="newVaccineConfigurationForm.$invalid || vm.saveCancelButtonsDisabled"/>
+                <input type="button" class="cancel" ng-click="vm.cancel()" ng-disabled="vm.saveCancelButtonsDisabled" value="Cancel"/>
             </p>
         </form>
 </div>

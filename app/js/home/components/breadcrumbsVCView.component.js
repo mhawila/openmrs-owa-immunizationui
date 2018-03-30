@@ -1,5 +1,4 @@
-
-let breadcrumbsVcCreateComponent = {
+let breadcrumbsVcViewComponent = {
     restrict: 'E',
     bindings: {},
     template: `<div>
@@ -13,7 +12,7 @@ function Controller() {
     let vm = this;
     vm.links = {};
     vm.links["Manage Vaccine Configuration"] = "";
-    vm.links["Create"] = "create";
+    vm.links["View"] = "view";
 }
 
-export default breadcrumbsVcCreateComponent;
+export default breadcrumbsVcViewComponent;
