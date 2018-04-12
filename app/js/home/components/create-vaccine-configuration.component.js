@@ -12,6 +12,7 @@ Controller.$inject = ['ImmunizationService', 'Utils', '$state'];
 
 function Controller(ImmunizationService, Utils, $state) {
     let vm = this;
+    vm.errors = [];
     vm.newConfiguration = {};
     vm.saveCancelButtonsDisabled = false;
     vm.required = true; //if truthy, input box will be required
@@ -62,11 +63,14 @@ function Controller(ImmunizationService, Utils, $state) {
         let payload = __createPayload(vm.newConfiguration);
         ImmunizationService.postVaccineConfiguration(payload).then(response => {
             vm.saveCancelButtonsDisabled = false;
-            console.log('data posted with response', response);
-            $state.go('home');
+            vm.errors = [];
+            $state.go('viewVaccineConfiguration', {
+                vaccineConfigurationUuid: response.uuid,
+            });
         }).catch(err => {
+            vm.errors.push(err);
             vm.saveCancelButtonsDisabled = false;
-            console.log('An error occured', err);
+            console.log('An error occurred', err);
         });
     }
 
@@ -75,6 +79,8 @@ function Controller(ImmunizationService, Utils, $state) {
             name: newConfigurationData.name,
             description: newConfigurationData.description,
             concept: newConfigurationData.concept.uuid,
+            ageFirstTimeRequired: newConfigurationData.ageFirstTimeRequired,
+            ageUnit: newConfigurationData.ageUnit,
             numberOfTimes: newConfigurationData.numberOfTimes.value || 1,
             intervals: newConfigurationData.intervals,
         };

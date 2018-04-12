@@ -4,6 +4,10 @@
 
 <div id="body-wrapper">
     <h2> Create Vaccine Configuration </h2>
+    <div class="toast-error vaccine-container" ng-show="vm.errors.length > 0">
+        <span  ng-repeat="error in vm.errors">{{ error }}</span>
+    </div>
+    <div>
         <form id="new-vaccine-configuration" class="sized-inputs css-form" name="newVaccineConfigurationForm" novalidate>
             <p>
                 <label for="conf-name">Name</label>
@@ -15,6 +19,17 @@
                 </concept-auto-complete>
             </p>
             <p>
+                <label for="conf-description">Description</label>
+                <textarea type="text" id="conf-description" ng-model="vm.newConfiguration.description"></textarea>
+            </p>
+            <p>
+                <label for="age-first-time-required">Age when First Required</label>
+                <input id="age-first-time-required" type="number" ng-model="vm.newConfiguration.ageFirstTimeRequired"/>
+                <label>Age Units</label>
+                <select ng-options="unit for unit in vm.units" ng-model="vm.newConfiguration.ageUnit"
+                        ng-required="vm.newConfiguration.ageFirstTimeRequired > 0"></select>
+            </p>
+            <p>
                 <label for="number-of-times">Number of Times Required</label>
                 <select id="number-of-times" ng-model="vm.newConfiguration.numberOfTimes"
                         ng-options="time.name for time in vm.times track by time.value"
@@ -23,14 +38,10 @@
             <p ng-repeat="block in vm.intervalBlocks">
                 <label>Time interval between {{block.from}} and {{block.to}}</label>
                 <input type="number" ng-model="vm.newConfiguration.intervals[$index].timeValue" />
-                <label>Units</label>
+                <label>Interval Units</label>
                 <select ng-options="unit for unit in vm.units" ng-model="vm.newConfiguration.intervals[$index].timeUnit"></select>
             </p>
 
-            <p>
-                <label for="conf-description">Description</label>
-                <textarea type="text" id="conf-description" ng-model="vm.newConfiguration.description"></textarea>
-            </p>
 
             <p class="button-group">
                 <input type="button" value="Save" class="submitButton confirm right" ng-click="vm.saveConfiguration()"
@@ -38,4 +49,5 @@
                 <input type="button" class="cancel" ng-click="vm.cancel()" ng-disabled="vm.saveCancelButtonsDisabled" value="Cancel"/>
             </p>
         </form>
+    </div>
 </div>

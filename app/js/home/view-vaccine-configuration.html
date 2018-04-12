@@ -27,6 +27,10 @@
                 <td class="vertical-header">Description</td>
                 <td> {{ vm.viewModelConfiguration.description }} </td>
             </tr>
+            <tr ng-if="vm.viewModelConfiguration.ageFirstTimeRequired >= 0">
+                <td class="vertical-header">Age when First Required</td>
+                <td> {{ vm.viewModelConfiguration.ageFirstTimeRequired }} {{ vm.viewModelConfiguration.ageUnit | lowercase }} </td>
+            </tr>
             <tr>
                 <td class="vertical-header">Required</td>
                 <td> {{ vm.viewModelConfiguration.numberOfTimes.name }} </td>
@@ -36,7 +40,7 @@
                 <td>
                     <span ng-if="vm.viewModelConfiguration.intervals.length === 0" style="color: red">No intervals defined</span>
                     <span ng-repeat="interval in vm.viewModelConfiguration.intervals">
-                        {{ interval.from }} and {{ interval.to }}: {{ interval.timeValue }} {{ interval.timeUnit }}(s)
+                        {{ interval.from }} and {{ interval.to }}: {{ interval.timeValue }} {{ interval.timeUnit | lowercase }}
                     </span>
                 </td>
             </tr>

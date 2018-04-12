@@ -57,7 +57,6 @@ function Controller(ImmunizationService, Utils, $state, $stateParams) {
             vm.viewModelConfiguration.intervals.forEach(interval => {
                 interval.from = numberMaps[interval.rank1];
                 interval.to = numberMaps[interval.rank2];
-                interval.timeUnit = interval.timeUnit.toLowerCase();
             });
         }
     }
