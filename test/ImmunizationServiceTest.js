@@ -53,4 +53,4 @@ describe('Vaccine Service Unit Tests', () => {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
-})
+});

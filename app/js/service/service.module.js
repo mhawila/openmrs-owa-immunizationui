@@ -5,10 +5,15 @@ import 'angular-resource';
 
 let module;
 module = angular.module('service.module', ['ngResource'])
-    .factory('Utils', function ($location) {
+    .constant('VACCINE_GLOBAL_PROPERTIES', {
+        conceptSet: 'immunizationapi.vaccine.conceptSet',
+        conceptClass: 'immunizationapi.vaccine.conceptClass'
+    })
+    .factory('Utils', function ($location, $resource, VACCINE_GLOBAL_PROPERTIES) {
+        const contextPath = '/' + $location.absUrl().split('/')[3];
         return {
             getOpenmrsContextPath: () => {
-                return '/' + $location.absUrl().split('/')[3];
+                return contextPath;
             },
 
             getTimes: () => {
@@ -46,6 +51,22 @@ module = angular.module('service.module', ['ngResource'])
                     5: 'fifth',
                     6: 'sixth'
                 };
+            },
+
+            getVaccineConceptSet: () => {
+                // for empty context path
+                let basePath = contextPath === '/' ? '' : contextPath;
+                return $resource(basePath + '/ws/rest/v1/immunizationapi/globalproperty', {
+                    property: VACCINE_GLOBAL_PROPERTIES.conceptSet
+                }).get().$promise;
+            },
+
+            getVaccineConceptClass: () => {
+                // for empty context path
+                let basePath = contextPath === '/' ? '' : contextPath;
+                return $resource(basePath + '/ws/rest/v1/immunizationapi/globalproperty', {
+                    property: VACCINE_GLOBAL_PROPERTIES.conceptClass
+                }).get().$promise;
             }
         };
     })

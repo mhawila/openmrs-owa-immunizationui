@@ -8,9 +8,9 @@ let createVaccineConfigurationComponent = {
     template: template
 };
 
-Controller.$inject = ['ImmunizationService', 'Utils', '$state'];
+Controller.$inject = ['ImmunizationService', 'Utils', '$state', 'VACCINE_GLOBAL_PROPERTIES'];
 
-function Controller(ImmunizationService, Utils, $state) {
+function Controller(ImmunizationService, Utils, $state, VACCINE_GLOBAL_PROPERTIES) {
     let vm = this;
     vm.errors = [];
     vm.newConfiguration = {};
@@ -31,6 +31,10 @@ function Controller(ImmunizationService, Utils, $state) {
     vm.units = Utils.getTimeIntervalUnits();
 
     vm.numberMaps = Utils.getOrdinalMap();
+
+    function getVaccineGlobalProperties() {
+
+    }
 
     function updateIntervalsSection() {
         vm.intervalBlocks = [];
