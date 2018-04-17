@@ -32,15 +32,15 @@ function Controller(ImmunizationService, Utils, $state, VACCINE_GLOBAL_PROPERTIE
 
     vm.numberMaps = Utils.getOrdinalMap();
 
-    (function getVaccineGlobalProperties() {
-        Utils.getConceptSet().then(value => {
-            vm.conceptSetFilter = value;
-        });
-
-        Utils.getConceptClass().then(value => {
-            vm.conceptClassFilter = value;
-        })
-    })();
+    // (function getVaccineGlobalProperties() {
+    //     Utils.getConceptSet().then(value => {
+    //         vm.conceptSetFilter = value;
+    //     });
+    //
+    //     Utils.getConceptClass().then(value => {
+    //         vm.conceptClassFilter = value;
+    //     })
+    // })();
 
     function updateIntervalsSection() {
         vm.intervalBlocks = [];
