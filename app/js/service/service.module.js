@@ -1,10 +1,6 @@
 'use strict';
-// This import is mainly to make the tests work. (I have no idea why it does not work without this line even though,
-// it works when deployed in production or dev build!)
-import 'angular-resource';
 
-let module;
-module = angular.module('service.module', ['ngResource'])
+let module = angular.module('service.module', ['ngResource'])
     .constant('VACCINE_GLOBAL_PROPERTIES', {
         conceptSet: 'immunizationapi.vaccine.conceptSet',
         conceptClass: 'immunizationapi.vaccine.conceptClass'
@@ -123,6 +119,30 @@ module = angular.module('service.module', ['ngResource'])
 
             retireVaccineConfiguration: (uuid) => {
                 return VaccineConfigurationResource.delete({uuid: uuid}).$promise;
+            },
+
+            getAdministeredVaccine: (uuid, params) => {
+                if(uuid === undefined || uuid === null || typeof uuid !== 'string') {
+                    return Promise.reject(new Error('uuid must be passed for this method'));
+                }
+                if(angular.isUndefined(params)) params = { v: 'full' };
+                if(angular.isUndefined(params.v)) params.v = 'full';
+                params = Object.assign(params, { uuid: uuid});
+                return AdministeredVaccineResource.query(params).$promise;
+            },
+
+            getAdministeredVaccines: (params) => {
+                if(angular.isUndefined(params)) params = { v: 'full' };
+                if(angular.isUndefined(params.v)) params.v = 'full';
+
+                return AdministeredVaccineResource.query(params).$promise.then(response => {
+                    if(response.results) {
+                        return response.results;
+                    }
+                    else {
+                        return response;
+                    }
+                });
             }
         }
     });

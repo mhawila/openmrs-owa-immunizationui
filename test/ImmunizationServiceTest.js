@@ -1,6 +1,7 @@
 'use strict';
 
 import '../app/js/service/service.module';
+import 'angular-resource';
 
 describe('Vaccine Service Unit Tests', () => {
     let $httpBackend, ImmunizationService;
