@@ -38,9 +38,9 @@
             <p>
                 <label for="conf-retire">Retire Configuration</label>
                 <input type="checkbox" ng-model="vm.configurationToEdit.retired" ng-change="vm.buttonValue()" id="conf-retire"/>
-                <!--<textarea ng-show="vm.configurationToEdit.retired" ng-model="vm.configurationToEdit.retireReason"-->
-                          <!--placeholder="Enter Retire reason here (required)"-->
-                          <!--ng-required="vm.configurationToEdit.retired"></textarea>-->
+                <textarea ng-show="vm.configurationToEdit.retired" ng-model="vm.configurationToEdit.retireReason"
+                          placeholder="Enter Retire reason here (required)"
+                          ng-required="vm.configurationToEdit.retired"></textarea>
             </p>
 
             <p class="button-group">

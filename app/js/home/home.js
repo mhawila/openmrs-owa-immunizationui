@@ -1,6 +1,7 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import '../service/service.module';
+import './filters/filters.module';
 import breadcrumbsComponent from './components/breadcrumbs.component.js';
 import breadcrumbsVcCreateComponent from './components/breadcrumbsVCCreate.component';
 import breadcrumbsVcViewComponent from './components/breadcrumbsVCView.component';
@@ -12,11 +13,18 @@ import manageVaccineConfiguration from './components/manage-vaccine-configuratio
 import createVaccineConfiguration from './components/create-vaccine-configuration.component';
 import editVaccineConfiguration from './components/edit-vaccine-configuration.component';
 import viewVaccineConfiguration from './components/view-vaccine-configuration.component';
+import patientVaccines from './components/patient-vaccines.component';
 import '@openmrs/openmrs-contrib-uicommons';
 import 'angular-ui-bootstrap';
 
-let homeModule = angular.module('home', [ uiRouter, 'openmrs-contrib-uicommons',
-    'openmrs-contrib-uicommons.concept-autoComplete', 'ui.bootstrap', 'service.module'])
+let homeModule = angular.module('home', [
+    uiRouter,
+    'openmrs-contrib-uicommons',
+    'openmrs-contrib-uicommons.rest',
+    'openmrs-contrib-uicommons.concept-autoComplete',
+    'ui.bootstrap',
+    'service.module',
+    'filters.module'])
     .config(($stateProvider, $urlRouterProvider, $compileProvider) => {
         "ngInject";
         $compileProvider.preAssignBindingsEnabled(true);
@@ -46,6 +54,11 @@ let homeModule = angular.module('home', [ uiRouter, 'openmrs-contrib-uicommons',
                 vaccineConfiguration: null,
             },
             template: '<edit-vaccine-configuration></edit-vaccine-configuration>',
+        })
+
+        .state('patientVaccines', {
+            url: '/vaccines/:patientUuid',
+            template: '<patient-vaccines></patient-vaccines>'
         });
     })
     .config(['$qProvider', function ($qProvider) {
@@ -68,6 +81,7 @@ let homeModule = angular.module('home', [ uiRouter, 'openmrs-contrib-uicommons',
     .component('manageVaccineConfiguration', manageVaccineConfiguration)
     .component('createVaccineConfiguration', createVaccineConfiguration)
     .component('viewVaccineConfiguration', viewVaccineConfiguration)
-    .component('editVaccineConfiguration', editVaccineConfiguration);
+    .component('editVaccineConfiguration', editVaccineConfiguration)
+    .component('patientVaccines', patientVaccines);
 
 export default homeModule;

@@ -6,6 +6,11 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
+/** {*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+/*}*/
+
 body {
     font-family: "OpenSans", Arial, sans-serif;
     -webkit-font-smoothing: subpixel-antialiased;
@@ -78,3 +83,56 @@ header .logo img {
     font-size: 16px;
     font-weight: bold;
 }
+
+.success-label {
+    border: #00b400;
+    color: #00b400;
+    padding: 2px 3px;
+}
+
+.pending-label {
+    color: #7500d5;
+    border:1px #7500d5 solid;
+    padding: 2px 3px;
+}
+
+.missed-label {
+    color: #ff0000;
+    border: 1px red solid;
+    padding: 2px 3px;
+}
+
+table.inner-table {
+    border: none;
+}
+
+table.inner-table td, table.inner-table th {
+    padding: 5px;
+    border: none;
+}
+
+table.inner-table tr {
+    border-top: none;
+    border-right: 1px;
+    border-bottom: none;
+    border-left: none;
+}
+
+table.inner-table-data {
+    border: none;
+    border-left:1px solid #b6b6b6;
+    padding: 10px;
+}
+
+table.inner-table-data td, table.inner-table th {
+    padding: 10px 0px 5px 10px;
+    border: none;
+}
+
+table.inner-table-data tr {
+    border-top: none;
+    border-right: 1px;
+    border-bottom: none;
+    border-left: none;
+}
+
