@@ -5,6 +5,7 @@ import '../app/js/service/service.module';
 describe('Vaccine Service Unit Tests', () => {
     let $httpBackend, ImmunizationService;
     const URL = '/ws/rest/v1/immunizationapi/vaccineconfiguration';
+    const ADMIN_URL = '/ws/rest/v1/immunizationapi/administeredvaccine';
 
     beforeEach(angular.mock.module('service.module'));
     beforeEach(() => {
@@ -46,6 +47,20 @@ describe('Vaccine Service Unit Tests', () => {
         let uuid = 'to-be-deleted-uuid';
         $httpBackend.expectDELETE(URL + '/' + uuid).respond(204);
         ImmunizationService.retireVaccineConfiguration(uuid);
+        $httpBackend.flush();
+    });
+
+    it('getAdministeredVaccine() should issue a correct rest request', () => {
+        let uuid = 'existing-administered-vaccine-uuid';
+        $httpBackend.expectGET(ADMIN_URL + '/' + uuid + '?v=full').respond(200);
+        ImmunizationService.getAdministeredVaccine(uuid);
+        $httpBackend.flush();
+    });
+
+    it('getAdministeredVaccines() should issue a correct rest call', () => {
+        let params = { patient: 'patient-on-server' };
+        $httpBackend.expectGET(ADMIN_URL + '?patient=' + params.patient + '&v=full').respond(200);
+        ImmunizationService.getAdministeredVaccines(params);
         $httpBackend.flush();
     });
 
