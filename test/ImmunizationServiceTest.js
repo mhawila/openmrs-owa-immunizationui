@@ -6,7 +6,7 @@ import 'angular-resource';
 describe('Vaccine Service Unit Tests', () => {
     let $httpBackend, ImmunizationService;
     const URL = '/ws/rest/v1/immunizationapi/vaccineconfiguration';
-    const ADMIN_URL = '/ws/rest/v1/immunizationapi/administeredvaccine';
+    const VACCINE_ADMIN_URL = '/ws/rest/v1/immunizationapi/administeredvaccine';
 
     beforeEach(angular.mock.module('service.module'));
     beforeEach(() => {
@@ -53,15 +53,29 @@ describe('Vaccine Service Unit Tests', () => {
 
     it('getAdministeredVaccine() should issue a correct rest request', () => {
         let uuid = 'existing-administered-vaccine-uuid';
-        $httpBackend.expectGET(ADMIN_URL + '/' + uuid + '?v=full').respond(200);
+        $httpBackend.expectGET(VACCINE_ADMIN_URL + '/' + uuid + '?v=full').respond(200);
         ImmunizationService.getAdministeredVaccine(uuid);
         $httpBackend.flush();
     });
 
     it('getAdministeredVaccines() should issue a correct rest call', () => {
         let params = { patient: 'patient-on-server' };
-        $httpBackend.expectGET(ADMIN_URL + '?patient=' + params.patient + '&v=full').respond(200);
+        $httpBackend.expectGET(VACCINE_ADMIN_URL + '?patient=' + params.patient + '&v=full').respond(200);
         ImmunizationService.getAdministeredVaccines(params);
+        $httpBackend.flush();
+    });
+    
+    it('postAdministeredVaccine() should issue the correct post rest call', () => {
+        let payload = { 
+            vaccineConfiguration: 'uuid-of-the-associated-configuration',
+            obs: {
+                concept: 'concept-uuid',
+                value: '2017-12-09'
+            }
+        };
+        
+        $httpBackend.expectPOST(VACCINE_ADMIN_URL, payload).respond(200);
+        ImmunizationService.postAdministeredVaccine(payload);
         $httpBackend.flush();
     });
 

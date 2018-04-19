@@ -143,6 +143,10 @@ let module = angular.module('service.module', ['ngResource'])
                         return response;
                     }
                 });
+            },
+
+            postAdministeredVaccine: (payload) => {
+                return AdministeredVaccineResource.save(payload).$promise;
             }
         }
     });
