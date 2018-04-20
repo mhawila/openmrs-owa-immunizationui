@@ -142,3 +142,10 @@ table.inner-table-data tr {
     border-left: none;
 }
 
+.fancy-button {
+    border-radius: 4px;
+    background-color: #007fff1f;
+    border: 1px solid #246398;
+    cursor: pointer;
+    color: #363463;
+}
