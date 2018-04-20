@@ -150,7 +150,8 @@ function createWebpackConfig(cliArgs) {
     let webpackConfig = {
         entry: {
             app : `${__dirname}/app/js/immunizationui`,
-            css: `${__dirname}/app/css/immunizationui.css`,
+            css: [`${__dirname}/app/css/immunizationui.css`, `${__dirname}/app/css/modal.css` ],
+            'vendor-css': `${__dirname}/app/css/vendor.css`,
             vendor : [
                 'angular', '@openmrs/openmrs-contrib-uicommons', 'angular-animate'
             ]

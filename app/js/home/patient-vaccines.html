@@ -1,13 +1,17 @@
+<openmrs-breadcrumbs links="vm.links" xmlns="http://www.w3.org/1999/html"></openmrs-breadcrumbs>
 <div id="body-wrapper">
     <h2>Patient Vaccines</h2>
     <div ng-show="vm.errors.length > 0" class="vaccine-container toast-error">
         <span ng-repeat="error in vm.errors">{{ error }}</span>
     </div>
+    <div ng-if="vm.postVaccineSuccess" class="vaccine-container toast-success">
+        Thank you, the new added record is saved successfully!
+    </div>
     <table class="vaccine-container">
         <thead>
             <tr>
                 <th>Vaccine</th>
-                <th>Details</th>
+                <th>Doses Details</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -21,8 +25,8 @@
                         <table class="inner-table-data">
                             <tr>
                                 <td>
-                                    <span ng-class="{'success-label': instance.administered, 'pending-label': instance.pending, 'missed-label': instance.missed }">
-                                        {{ instance.dose | uppercase }} DOSE
+                                    <span ng-class="{'success-label': instance.administered, 'pending-label': instance.pending, 'missed-label': instance.missed, 'no-info-label': !instance.supposedDate }">
+                                        {{ instance.dose | uppercase }}
                                         <i ng-if="instance.missed" class="icon-remove-sign"></i>
                                         <i ng-if="instance.administered" class="icon-ok-sign"></i>
                                         <i ng-if="instance.pending" class="icon-tag"></i>
@@ -48,11 +52,41 @@
             </table>
             </td>
             <td>
-                <button class="btn-success">Record</button>
+                <button class="btn-success" ng-click="vm.openRecordDialog(config, newVaccineAdministrationRecord)">
+                    <i class="icon-plus-sign"></i>Add
+                </button>
             </td>
         </tr>
     </table>
-    <div>
-        <button ng-click="vm.recordVaccination()">Record Immunization</button>
+    <!--<div>-->
+        <!--<button ng-click="vm.recordVaccination()">Record Immunization</button>-->
+    <!--</div>-->
+
+    <!-- Modal One -->
+    <div class="modal">
+        <input class="modal-open" id="new-vaccination-dialog" type="checkbox" hidden/>
+        <div class="modal-wrap" aria-hidden="true" role="dialog">
+            <label class="modal-overlay" for="new-vaccination-dialog"></label>
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    {{ vm.newVaccinationRecord.configuration.name }}
+                    <label class="btn-close" for="new-vaccination-dialog" aria-hidden="true"><i class="icon-remove"></i></label>
+                </div>
+                <div class="modal-body">
+                    <form id="new-vaccine-record" class="sized-inputs css-form" name="newVaccineAdministrationRecord" novalidate>
+                        <span id="success-message" class="toast-success" ng-show="vm.postVaccineSuccess">Record has been saved successfully!</span>
+                        <label>Date Given</label>
+                        <input type="text" id="date-given-picker" ng-model="vm.newVaccinationRecord.dateGiven" required/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <p class="button-group">
+                        <input type="button" value="Save" class="submitButton confirm right" ng-click="vm.saveVaccinationRecord()"
+                               ng-disabled="newVaccineAdministrationRecord.$invalid || vm.saveCancelButtonsDisabled"/>
+                        <!--<input type="button" class="cancel btn-close" ng-click="vm.cancel()" ng-disabled="vm.saveCancelButtonsDisabled" value="Cancel"/>-->
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
