@@ -7,7 +7,15 @@
     <div ng-if="vm.postVaccineSuccess" class="vaccine-container toast-success">
         Thank you, the new added record is saved successfully!
     </div>
-    <table class="vaccine-container">
+    <div class="vaccine-container">
+        <h5>Color key</h5>
+        <ul>
+            <li style="padding-bottom: 3px"><i class="icon-ok-sign success-label"></i> = Already given</li>
+            <li  style="padding-bottom: 3px"><i class="icon-tag pending-label"></i> = Pending (Future Date)</li>
+            <li><i class="icon-remove-sign missed-label"></i> = Missed</li>
+        </ul>
+    </div>
+    <table class="vaccine-container administered-vaccine">
         <thead>
             <tr>
                 <th>Vaccine</th>

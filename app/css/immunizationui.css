@@ -107,26 +107,32 @@ header .logo img {
     padding: 2px 3px;
 }
 
+table.administered-vaccine tr {
+    background: rgba(255, 250, 240, 0.26);
+}
+
 table.inner-table {
     border: none;
 }
 
 table.inner-table td, table.inner-table th {
     padding: 5px;
-    border: none;
+    border-bottom: 1px solid #b6b6b6;
 }
 
 table.inner-table tr {
+    background: transparent;
     border-top: none;
-    border-right: 1px;
+    border-right: none;
     border-bottom: none;
     border-left: none;
 }
 
 table.inner-table-data {
+    table-layout: fixed;
     border: none;
-    border-left:1px solid #b6b6b6;
-    border-right: 1px solid #b6b6b6;
+    /*border-left:1px solid #b6b6b6;*/
+    /*border-right: 1px solid #b6b6b6;*/
     padding: 10px;
 }
 
@@ -136,8 +142,9 @@ table.inner-table-data td, table.inner-table th {
 }
 
 table.inner-table-data tr {
+    background: transparent;
     border-top: none;
-    border-right: 1px;
+    border-right: none;
     border-bottom: none;
     border-left: none;
 }
