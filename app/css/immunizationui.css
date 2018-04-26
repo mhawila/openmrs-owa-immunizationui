@@ -156,3 +156,43 @@ table.inner-table-data tr {
     cursor: pointer;
     color: #363463;
 }
+
+ul.pagination {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #c2c2c2;
+    overflow: hidden;
+}
+
+ul.pagination li {
+    float: left;
+    border-right: 1px solid #c2c2c2;
+}
+
+ul.pagination li:last-child {
+    border: none;
+}
+
+ul.pagination li a {
+    display: block;
+    text-align: center;
+    padding: 9px 14px;
+    text-decoration: none;
+}
+
+ul.pagination li a:hover {
+    background-color: #dddddd;
+}
+
+ul.pagination li.active {
+    background-color: #dddddd;
+}
+
+ul.pagination li.disabled a {
+    color: #dddddd;
+}
+
+ul.pagination li.disabled a:hover {
+    background-color: #ffffff;
+}

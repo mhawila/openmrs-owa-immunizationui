@@ -7,26 +7,49 @@
 <div id="body-wrapper">
     <h2> Manage Vaccine Configurations </h2>
     <div ng-show="$ctrl.errors.length > 0">
-        <span class="toast-error" ng-repeat="error in vm.errors">{{ error }}</span>
+        <span class="toast-error" ng-repeat="error in $ctrl.errors">{{ error }}</span>
     </div>
     <div>
         <!--TODO: Add paging and search to this table -->
     <table id="configurations-table">
-        <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
-        </tr>
-        <tr ng-repeat="vaccineConfiguration in $ctrl.vaccineConfigurations track by $index">
-            <td>{{$index + 1}}</td>
-            <td>{{ vaccineConfiguration.name }}</td>
-            <td>{{ vaccineConfiguration.description }}</td>
-            <td class="actions">
-                <a ng-click="$ctrl.editConfiguration(vaccineConfiguration)"><i class="icon-pencil edit-action"></i></a>
-                <a ng-click="$ctrl.viewConfiguration(vaccineConfiguration)"><i class="icon-eye-open edit-action"></i></a>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="vaccineConfiguration in $ctrl.pagedItems[$ctrl.currentPage] track by $index">
+                <td>{{ $index + 1 + $ctrl.currentPage * $ctrl.itemsPerPage}}</td>
+                <td>{{ vaccineConfiguration.name }}</td>
+                <td>{{ vaccineConfiguration.description }}</td>
+                <td class="actions">
+                    <a ng-click="$ctrl.editConfiguration(vaccineConfiguration)"><i class="icon-pencil edit-action"></i></a>
+                    <a ng-click="$ctrl.viewConfiguration(vaccineConfiguration)"><i class="icon-eye-open edit-action"></i></a>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <td colspan="6">
+                <div class="pull-right">
+                    <ul class="pagination">
+                        <li ng-class="{disabled: $ctrl.currentPage == 0}">
+                            <a href ng-click="$ctrl.prevPage()" class="fg-button ui-button ui-state-default">« Prev</a>
+                        </li>
+                        <li ng-repeat="n in $ctrl.range($ctrl.pagedItems.length)"
+                            ng-class="{active: n == $ctrl.currentPage}"
+                            ng-click="$ctrl.setPage(n)">
+                            <a href ng-bind="n + 1">1</a>
+                        </li>
+                        <li ng-class="{disabled: $ctrl.currentPage == $ctrl.pagedItems.length - 1}">
+                            <a href ng-click="$ctrl.nextPage()">Next »</a>
+                        </li>
+                    </ul>
+                </div>
             </td>
-        </tr>
+        </tfoot>
     </table>
     </div><br/>
     <div>
