@@ -20,7 +20,7 @@ function VaccineConfigurationController(ImmunizationService, $state, $filter) {
     vm.reverse = false;
     // vm.filteredItems = [];
     vm.groupedItems = [];
-    vm.itemsPerPage = 5;
+    vm.itemsPerPage = 15;
     vm.pagedItems = [];
     vm.currentPage = 0;
 
