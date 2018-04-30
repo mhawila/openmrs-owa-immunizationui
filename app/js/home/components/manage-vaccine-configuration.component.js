@@ -11,18 +11,17 @@ let vaccineConfigurationComponent = {
 VaccineConfigurationController.$inject = ['ImmunizationService', '$state', '$filter' ];
 
 function VaccineConfigurationController(ImmunizationService, $state, $filter) {
+    const NUMBER_SEARCH_CHARS = 3;
     let vm = this;
     vm.vaccineConfigurations = [];
     vm.errors = [];
 
     /***************  PAGING STUFF***********************************/
     // vm.sortingOrder = sortingOrder;
-    vm.reverse = false;
-    // vm.filteredItems = [];
-    vm.groupedItems = [];
     vm.itemsPerPage = 15;
     vm.pagedItems = [];
     vm.currentPage = 0;
+    vm.numberOfSearchCharacters = NUMBER_SEARCH_CHARS;
 
     vm.groupToPages = function () {
         vm.pagedItems = [];
@@ -34,6 +33,8 @@ function VaccineConfigurationController(ImmunizationService, $state, $filter) {
                 vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.vaccineConfigurations[i]);
             }
         }
+
+        if(vm.pagedItems.length > 0) vm.currentPage = 0;
     };
 
     vm.range = function (start, end) {
@@ -65,23 +66,23 @@ function VaccineConfigurationController(ImmunizationService, $state, $filter) {
         vm.currentPage = page;
     };
 
-    // vm.search = function () {
-    //     vm.filteredItems = $filter('filter')(vm.items, function (item) {
-    //         for(var attr in item) {
-    //             if (searchMatch(item[attr], vm.query))
-    //                 return true;
-    //         }
-    //         return false;
-    //     });
-    //     // take care of the sorting order
-    //     if (vm.sortingOrder !== '') {
-    //         vm.filteredItems = $filter('orderBy')(vm.filteredItems, vm.sortingOrder, vm.reverse);
-    //     }
-    //     vm.currentPage = 0;
-    //     // now group by pages
-    //     vm.groupToPages();
-    // };
+    vm.search = function() {
+        // Start with three characters
+        let params = {};
+        if(typeof vm.searchText === 'string' && vm.searchText.length >= NUMBER_SEARCH_CHARS) {
+            params.name = vm.searchText;
+        }
+
+        console.log('includeRetired value: ', vm.includeRetired);
+        if(vm.includeRetired === true) {
+            params.includeAll = true;
+        }
+
+        _fetchVaccineConfigurations(params);
+    };
+
     /************************* end of paging stufff***********************/
+
     vm.createConfiguration = function() {
         $state.go('createVaccineConfiguration');
     };
@@ -102,8 +103,13 @@ function VaccineConfigurationController(ImmunizationService, $state, $filter) {
 
     _fetchVaccineConfigurations();
     // fetch vaccine configuration when this controller is instantiated.
-    function _fetchVaccineConfigurations() {
-        ImmunizationService.getVaccineConfigurations({v: 'full'}).then(data => {
+    function _fetchVaccineConfigurations(params) {
+        params = params || {};
+        if(params.v === null || params.v === undefined) {
+            params.v = 'full';
+        }
+
+        ImmunizationService.getVaccineConfigurations(params).then(data => {
             // Technical debt: Clear errors for now, for simplicity
             vm.errors = [];
             vm.vaccineConfigurations = data;

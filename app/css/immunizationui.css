@@ -191,6 +191,7 @@ ul.pagination li.active {
 
 ul.pagination li.disabled a {
     color: #dddddd;
+    cursor: default;
 }
 
 ul.pagination li.disabled a:hover {

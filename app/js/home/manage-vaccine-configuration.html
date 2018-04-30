@@ -12,18 +12,20 @@
     <div class="vaccine-container" style="overflow: hidden;">
         <span class="pull-left" style="width: 50%">
             <form name="searchTextForm" onsubmit="return false" novalidate>
-                <input type="text" ng-model="$ctrl.searchText" placeholder="Search by name" autocomplete="off" style="display: inline;"/>
-                <i class="small icon-remove-sign" style="position: relative; right: 30px"></i>
+                <input type="text" ng-model="$ctrl.searchText" placeholder="Search by name ({{ $ctrl.numberOfSearchCharacters }} characters or more)"
+                       ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }"
+                       autocomplete="off" style="display: inline;" ng-change="$ctrl.search()"/>
+                <!--<i class="small icon-remove-sign" style="position: relative; right: 30px" ng-click="$ctrl.resetSearch()"></i>-->
             </form>
         </span>
         <span class="pull-right">
             <form name="includeRetiredForm" onsubmit="return false" novalidate>
-                <input type="checkbox" ng-model="$ctrl.includeRetired"/> Include Retired
+                <input id="include-retired" type="checkbox" ng-model="$ctrl.includeRetired" ng-change="$ctrl.search()"/>
+                <label for="include-retired" style="display: inline">Include Retired</label>
             </form>
         </span>
     </div>
     <div class="vaccine-container">
-        <!--TODO: Add paging and search to this table -->
         <table id="configurations-table">
             <thead>
                 <tr>
