@@ -197,3 +197,11 @@ ul.pagination li.disabled a {
 ul.pagination li.disabled a:hover {
     background-color: #ffffff;
 }
+
+.deleted {
+    background: #f08080;
+}
+
+table tr.deleted {
+    background: #f08080;
+}
