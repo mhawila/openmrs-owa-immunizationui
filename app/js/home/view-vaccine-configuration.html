@@ -4,7 +4,7 @@
 
 <div id="body-wrapper">
     <h2> Vaccine Configuration Details For: <strong><i>{{ ::vm.referenceConfiguration.name }} </i></strong></h2>
-    <div class="toast-warning vaccine-container" ng-if="vm.viewModelConfiguration.retired">
+    <div class="toast-warning vaccine-container" ng-if="vm.viewModelConfiguration.auditInfo.retiredBy">
         <p>This Vaccine Configuration is Retired!</p>
     </div>
     <div class="toast-error vaccine-container" ng-show="vm.errors.length > 0">
@@ -43,6 +43,18 @@
                         {{ interval.from }} and {{ interval.to }}: {{ interval.timeValue }} {{ interval.timeUnit | lowercase }}
                     </span>
                 </td>
+            </tr>
+            <tr>
+                <td class="vertical-header">Creator</td>
+                <td>{{ vm.viewModelConfiguration.auditInfo.creator.display }} on {{ vm.viewModelConfiguration.auditInfo.dateCreated | date: 'medium' }} </td>
+            </tr>
+            <tr ng-if="vm.viewModelConfiguration.auditInfo.retiredBy">
+                <td class="vertical-header">Retired By</td>
+                <td>{{ vm.viewModelConfiguration.auditInfo.retiredBy.display }} on {{ vm.viewModelConfiguration.auditInfo.dateRetired | date: 'medium' }} </b></td>
+            </tr>
+            <tr ng-if="vm.viewModelConfiguration.auditInfo.retiredBy">
+                <td class="vertical-header">Retire reason</td>
+                <td>{{ vm.viewModelConfiguration.auditInfo.retireReason }} </b></td>
             </tr>
         </table>
     </div>

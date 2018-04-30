@@ -24,6 +24,7 @@ function Controller(ImmunizationService, Utils, $state, $stateParams) {
     vm.updateConfiguration = updateConfiguration;
     vm.cancel = cancel;
     vm.buttonValue = buttonValue;
+    vm.unretire = unretire;
 
     // Do work
     vm.times = Utils.getTimes();
@@ -127,6 +128,12 @@ function Controller(ImmunizationService, Utils, $state, $stateParams) {
         }
 
     }
+
+    // TODO: Implement this function to actually retire the resource in the backend.
+    function unretire() {
+        alert('Not implemented currently, stay tuned');
+    }
+
     function __prepareEnvironmentForEditingView(vaccineConfiguration) {
         previousNumberOfTimes = vaccineConfiguration.numberOfTimes;
         vm.referenceConfiguration = vaccineConfiguration;
