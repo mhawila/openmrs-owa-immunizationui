@@ -10,14 +10,13 @@ let patientVaccinesComponent = {
     template: template
 };
 
-Controller.$inject = [ 'ImmunizationService', 'openmrsRest', '$stateParams', 'Utils' ]
-function Controller(ImmunizationService, openmrsRest, $stateParams, Utils) {
+Controller.$inject = [ 'ImmunizationService', 'openmrsRest', '$stateParams', 'Utils', 'VACCINE_GLOBAL_PROPERTIES' ]
+function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) {
     const CONFIG_REP = 'custom:(uuid,name,numberOfTimes,ageFirstTimeRequired,ageUnit,intervals)';
 
-    // TODO: Replace this UUID constant with global property or something of that nature.
-    const VACCINATION_DATE_CONCEPT = 'd2fb6e44-d679-43ad-b5ac-183222d321df';
     let vm = this;
 
+    vm.vaccineDateConceptUuid = null;
     vm.saveCancelButtonsDisabled = false;
     vm.newVaccinationRecord = {};
     vm.errors = [];
@@ -41,6 +40,11 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils) {
     };
 
     vm.saveVaccinationRecord = function saveVaccinationRecord() {
+        if(!vm.vaccineDateConceptUuid) {
+            // We don't know the concept uuid for the vaccination date, can't do anything.
+            vm.errors.push('Error: Please ask the administrator to set the ' + VGP.vaccineDateConcept + ' global property value');
+            return;
+        }
         vm.saveCancelButtonsDisabled = true;
         vm.postVaccineSuccess = false;
         // Create payload
@@ -48,7 +52,7 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils) {
             vaccineConfiguration: vm.newVaccinationRecord.configuration.uuid,
             obs: {
                 person: vm.patient.uuid,
-                concept: VACCINATION_DATE_CONCEPT,
+                concept: vm.vaccineDateConceptUuid,
                 value: vm.newVaccinationRecord.dateGiven
             }
         };
@@ -77,6 +81,16 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils) {
 
 
     let ordinals = Utils.getOrdinalMap();
+
+    (function fetchVaccineDateConceptUuid() {
+        // Fetch the vaccine date concept UUID
+        Utils.getVaccineDateConcept().then(globaProperty => {
+            vm.vaccineDateConceptUuid = globaProperty.value;
+        }).catch(err => {
+            console.error(err);
+            vm.errors.push('Could not fetch the global property ' + VGP.vaccineDateConcept + ', Check console for details');
+        });
+    })();
 
     (function fetchPatientWithAssociatedVaccineRecords() {
         if(angular.isUndefined($stateParams.patientUuid)) {
