@@ -4,6 +4,8 @@ let module = angular.module('service.module', ['ngResource'])
     .constant('VACCINE_GLOBAL_PROPERTIES', {
         conceptSet: 'immunizationapi.vaccine.conceptSet',
         vaccineDateConcept: 'immunizationapi.vaccine.dateConcept',
+        vaccineEncounterType: 'immunizationapi.vaccine.encounterType',
+        vaccineEncounterRole: 'immunizationapi.vaccine.encounterRole',
     })
     .factory('Utils', function ($location, $resource, VACCINE_GLOBAL_PROPERTIES) {
         const contextPath = '/' + $location.absUrl().split('/')[3];
@@ -63,7 +65,15 @@ let module = angular.module('service.module', ['ngResource'])
                 return $resource(basePath + '/ws/rest/v1/immunizationapi/globalproperty', {
                     property: VACCINE_GLOBAL_PROPERTIES.vaccineDateConcept,
                 }).get().$promise;
-            }
+            },
+
+            getGlobalPropertyValue: (property) => {
+                // for empty context path
+                let basePath = contextPath === '/' ? '' : contextPath;
+                return $resource(basePath + '/ws/rest/v1/immunizationapi/globalproperty', {
+                    property: property,
+                }).get().$promise;
+            },
         };
     })
     .factory('VaccineConfigurationResource', function ($resource, Utils) {

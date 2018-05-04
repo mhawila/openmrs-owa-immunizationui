@@ -1,0 +1,6 @@
+<form name='conceptInput'>
+    <input class="form-control" type="text" placeholder='Enter provider name' ng-model="$ctrl.searchText"
+           ng-change="$ctrl.search()" uib-typeahead="provider as $ctrl.display(provider.display, provider.uuid) for provider in $ctrl.suggestions"
+           ng-required='$ctrl.required' typeahead-wait-ms="250" typeahead-on-select="$ctrl.onSelect($item, $model, $label)">
+    <span ng-show='!$ctrl.isCorrect'>This provider does not exist</span>
+</form>

@@ -18,14 +18,21 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
 
     vm.vaccineDateConceptUuid = null;
     vm.saveCancelButtonsDisabled = false;
-    vm.newVaccinationRecord = {};
+    vm.newVaccinationRecord = {
+        provider: { display: '' }
+    };
     vm.errors = [];
     vm.administeredVaccines = {};
     vm.links = {
         'Patient Vaccinations': '/vaccines/' + $stateParams.patientUuid,
     };
 
-    let picker = __createDatePicker();
+    let picker = _createDatePicker();
+
+    vm.onProviderUpdate = function(isCorrect, provider) {
+        vm.isConceptCorrect = isCorrect;
+        vm.newVaccinationRecord.provider = provider;
+    };
 
     // Functions
     vm.openRecordDialog = function openRecordDialog(config, form) {
@@ -36,15 +43,21 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
         vm.postVaccineSuccess = false;
         vm.newVaccinationRecord.configuration = config;
         vm.newVaccinationRecord.dateGiven = null;
+        vm.providerRequired = true;
         document.getElementById('new-vaccination-dialog').click();
     };
 
     vm.saveVaccinationRecord = function saveVaccinationRecord() {
         if(!vm.vaccineDateConceptUuid) {
             // We don't know the concept uuid for the vaccination date, can't do anything.
-            vm.errors.push('Error: Please ask the administrator to set the ' + VGP.vaccineDateConcept + ' global property value');
+            vm.errors.push('Cannot create a record without associated vaccine date concept, please set ' + VGP.vaccineDateConcept + ' global property value');
             return;
         }
+        if(!vm.newVaccinationRecord.provider) {
+            vm.errors.push('Cannot save a new vaccination without provider!');
+            return;
+        }
+
         vm.saveCancelButtonsDisabled = true;
         vm.postVaccineSuccess = false;
         // Create payload
@@ -57,9 +70,36 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
             }
         };
 
+        let __createEncounter = (obs) => {
+            // Try to get existing active visit if any
+            return _getExistingActiveVisit(vm.patient.uuid, obs.value).then(visit => {
+                if(_isOkToCreateEncounter()) {
+                    // Create encounter payload
+                    let encounterPayload = {
+                        patient: vm.patient.uuid,
+                        encounterType: vm.vaccineEncounterTypeUuid,
+                        encounterDatetime: obs.obsDatetime,
+                        obs: [ obs.uuid ],
+                        encounterProviders: [{
+                            provider: vm.newVaccinationRecord.provider.uuid,
+                            encounterRole: vm.vaccineEncounterRoleUuid
+                        }]
+                    };
+
+                    if(visit) {
+                        encounterPayload.visit = visit.uuid;
+
+                        if(visit.location) {
+                            encounterPayload.location = visit.location.uuid;
+                        }
+                    }
+
+                    return openmrsRest.create('encounter',encounterPayload);
+                }
+            });
+        };
+
         ImmunizationService.postAdministeredVaccine(payload).then(response => {
-            vm.saveCancelButtonsDisabled = false;
-            vm.postVaccineSuccess = true;
             if(!Array.isArray(vm.administeredGroups[vm.newVaccinationRecord.configuration.uuid])) {
                 vm.administeredGroups[vm.newVaccinationRecord.configuration.uuid] = [];
             }
@@ -68,9 +108,19 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
                 vm.formatted.find(one => one.uuid === payload.vaccineConfiguration)
             );
             vm.formatted.splice(associatedFormattedIndex, 1,
-                __formatOneOutput(vm.patient.person, vm.newVaccinationRecord.configuration,
-                vm.administeredGroups[vm.newVaccinationRecord.configuration.uuid]));
-            document.getElementById('new-vaccination-dialog').click();
+                _formatOneOutput(vm.patient.person, vm.newVaccinationRecord.configuration,
+                    vm.administeredGroups[vm.newVaccinationRecord.configuration.uuid]));
+            // Post associated encounter if any
+            __createEncounter(response.obs).then(encounterResponse => {
+                vm.saveCancelButtonsDisabled = false;
+                vm.postVaccineSuccess = true;
+                document.getElementById('new-vaccination-dialog').click();
+            }).catch(err => {
+                vm.postVaccineSuccess = false;
+                vm.errors.push(err);
+                document.getElementById('new-vaccination-dialog').click();
+                console.error(err);
+            });
         }).catch(err => {
             vm.postVaccineSuccess = false;
             vm.errors.push(err);
@@ -82,13 +132,20 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
 
     let ordinals = Utils.getOrdinalMap();
 
-    (function fetchVaccineDateConceptUuid() {
-        // Fetch the vaccine date concept UUID
-        Utils.getVaccineDateConcept().then(globaProperty => {
-            vm.vaccineDateConceptUuid = globaProperty.value;
+    // Load necessary items asynchronously. (Hopefully when the user finally uses one of this it will be there.
+    (function loadNecessaryItems() {
+        Promise.all([
+            Utils.getVaccineDateConcept(),
+            Utils.getGlobalPropertyValue(VGP.vaccineEncounterType),
+            Utils.getGlobalPropertyValue(VGP.vaccineEncounterRole),
+            _getProviderForAuthenticatedUser(),
+        ]).then(values => {
+            vm.vaccineDateConceptUuid = values[0].value;
+            vm.vaccineEncounterTypeUuid = values[1].value;
+            vm.vaccineEncounterRoleUuid = values[2].value;
+            vm.newVaccinationRecord.provider = values[3];
         }).catch(err => {
             console.error(err);
-            vm.errors.push('Could not fetch the global property ' + VGP.vaccineDateConcept + ', Check console for details');
         });
     })();
 
@@ -105,22 +162,22 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
         ]).then(responses => {
             vm.patient = responses[0];
             vm.configurations = responses[1];
-            vm.administeredGroups = __groupAdministeredVaccines(responses[2]);
+            vm.administeredGroups = _groupAdministeredVaccines(responses[2]);
 
-            vm.formatted = __formatOutput(vm.patient.person, vm.configurations, vm.administeredGroups);
+            vm.formatted = _formatOutput(vm.patient.person, vm.configurations, vm.administeredGroups);
         }).catch(err => {
             console.error(err);
             vm.errors.push(err);
         });
     })();
 
-    function __formatOutput(person, configurations, administeredGroups) {
+    function _formatOutput(person, configurations, administeredGroups) {
         return configurations.map(config => {
-            return __formatOneOutput(person, config, administeredGroups[config.uuid] || []);
+            return _formatOneOutput(person, config, administeredGroups[config.uuid] || []);
         });
     }
 
-    function __formatOneOutput(person, configuration, administeredGroup) {
+    function _formatOneOutput(person, configuration, administeredGroup) {
         let now = moment();
         let vaccineInstances = [];
         if(!Array.isArray(administeredGroup)) {
@@ -198,7 +255,7 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
         return configuration;
     }
 
-    function __groupAdministeredVaccines(administeredArray) {
+    function _groupAdministeredVaccines(administeredArray) {
         let groups = {};
         administeredArray.forEach(administered => {
             if(!Array.isArray(groups[administered.vaccineConfiguration.uuid])) {
@@ -226,12 +283,71 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
         return groups;
     }
 
-    function __createDatePicker(birthdate) {
+    function _createDatePicker(birthdate) {
         return new Pikaday({
             field: document.getElementById('date-given-picker'),
             maxDate: new Date(),
             // yearRange: [moment(vm.patient.person.birthdate).getDate(), moment().year()],
         });
+    }
+
+    // Function to load Patient's visits if any.
+    function _getExistingActiveVisit(patientUuid, desiredDate) {
+        let simpleVisitRep = 'custom:(uuid,patient:(uuid,uuid),' +
+            'visitType:(uuid,name),location:ref,startDatetime,' +
+            'stopDatetime)';
+        let params = {
+            patient: patientUuid,
+            v: simpleVisitRep
+        };
+
+        return openmrsRest.get('visit', params).then(response => {
+            let desiredMoment = desiredDate ? moment(desiredDate) : moment();
+
+            let visits = response.results;
+
+            visits = visits.filter(visit => {
+                let timeDifference = desiredMoment.diff(moment(visit.startDatetime), 'days');
+                return  timeDifference >= -1 && timeDifference <= 0;
+            }).sort((v1, v2) => {
+                let v1Moment = moment(v1.startDatetime);
+                let v2Moment = moment(v2.startDatetime);
+                if(v1Moment.isAfter(v2Moment)) return -1;
+                return 1;
+            });
+
+            if(visits.length > 0) {
+                return visits[0];
+            }
+
+            return null;
+        });
+    }
+
+    function _getProviderForAuthenticatedUser() {
+        return openmrsRest.get('session').then(response => {
+            if(response.authenticated) {
+                return openmrsRest.getFull('provider', { q: response.user.person.display }).then(response => {
+                    if(response.results.length > 0) return response.results[0];
+                    return null;
+                });
+            }
+            return null;
+        });
+    }
+
+    function _isOkToCreateEncounter() {
+        vm.vaccineEncounterErrors = [];
+        if(!vm.vaccineEncounterRoleUuid) {
+            vm.vaccineEncounterErrors
+                .push('Can not create encounter without role, please set ' + VGP.vaccineEncounterRole + ' global property if not set');
+        }
+
+        if(!vm.vaccineEncounterTypeUuid) {
+            vm.vaccineEncounterErrors
+                .push('Can not create encounter without encounter type, please set ' + VGP.vaccineEncounterType + ' global property if not set');
+        }
+        return vm.vaccineEncounterErrors.length === 0;
     }
 }
 

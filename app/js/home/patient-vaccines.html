@@ -85,6 +85,8 @@
                         <span id="success-message" class="toast-success" ng-show="vm.postVaccineSuccess">Record has been saved successfully!</span>
                         <label>Date Given</label>
                         <input type="text" id="date-given-picker" ng-model="vm.newVaccinationRecord.dateGiven" required/>
+                        <select-provider provider="vm.newVaccinationRecord.provider" on-update="vm.onProviderUpdate(isCorrect, provider)" required="vm.providerRequired">
+                        </select-provider>
                     </form>
                 </div>
                 <div class="modal-footer">

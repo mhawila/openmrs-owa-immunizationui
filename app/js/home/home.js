@@ -14,6 +14,7 @@ import createVaccineConfiguration from './components/create-vaccine-configuratio
 import editVaccineConfiguration from './components/edit-vaccine-configuration.component';
 import viewVaccineConfiguration from './components/view-vaccine-configuration.component';
 import patientVaccines from './components/patient-vaccines.component';
+import selectProviderComponent from './components/select-provider.component';
 import '@openmrs/openmrs-contrib-uicommons';
 import 'angular-ui-bootstrap';
 
@@ -82,6 +83,7 @@ let homeModule = angular.module('home', [
     .component('createVaccineConfiguration', createVaccineConfiguration)
     .component('viewVaccineConfiguration', viewVaccineConfiguration)
     .component('editVaccineConfiguration', editVaccineConfiguration)
-    .component('patientVaccines', patientVaccines);
+    .component('patientVaccines', patientVaccines)
+    .component('selectProvider', selectProviderComponent);
 
 export default homeModule;
