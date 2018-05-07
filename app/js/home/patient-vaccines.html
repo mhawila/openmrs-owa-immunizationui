@@ -1,8 +1,11 @@
 <openmrs-breadcrumbs links="vm.links" xmlns="http://www.w3.org/1999/html"></openmrs-breadcrumbs>
 <div id="body-wrapper">
     <h2>Patient Vaccines</h2>
-    <div ng-show="vm.errors.length > 0" class="vaccine-container toast-error">
+    <div ng-show="vm.errors.length" class="vaccine-container toast-error">
         <span ng-repeat="error in vm.errors">{{ error }}</span>
+    </div>
+    <div ng-show="vm.vaccineEncounterErrors.length" class="vaccine-container toast-error">
+        <span ng-repeat="error in vm.vaccineEncounterErrors">{{ error }}</span>
     </div>
     <div ng-if="vm.postVaccineSuccess" class="vaccine-container toast-success">
         Thank you, the new added record is saved successfully!

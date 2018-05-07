@@ -22,6 +22,7 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
         provider: { display: '' }
     };
     vm.errors = [];
+    vm.vaccineEncounterErrors = [];
     vm.administeredVaccines = {};
     vm.links = {
         'Patient Vaccinations': '/vaccines/' + $stateParams.patientUuid,
