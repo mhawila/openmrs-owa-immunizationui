@@ -215,3 +215,25 @@ table tr.deleted {
     background-color: rgba(0, 180, 0, 0.14);
     transition-duration: 1s;
 }
+
+.added-vaccine-error {
+    border: 3px double #ff0000;
+}
+
+/*-------------------------------------------------------------------------------*
+ *                  Error & Success Message styles                               *
+ *-------------------------------------------------------------------------------*/
+
+.vaccine-toast-success {
+    background-color: #409e18;
+    color: white;
+    border: 1px dashed white;
+}
+
+.vaccine-toast-error {
+    background-color: #e70000;
+    color: white;
+    border: 1px dashed white;
+}
+
+/*----------------------- end of error & success style --------------------------*/

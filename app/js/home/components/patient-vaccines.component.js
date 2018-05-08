@@ -129,6 +129,13 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
                 vm.errors.push(err);
                 document.getElementById('new-vaccination-dialog').click();
                 console.error(err);
+
+                // Add error class to updated row.
+                let updatedElement = document.getElementById(vm.newVaccinationRecord.configuration.uuid);
+                updatedElement.classList.toggle('added-vaccine-error');
+                window.setTimeout(function() {
+                    updatedElement.classList.toggle('added-vaccine-error');
+                }, 60000);
             });
         }).catch(err => {
             vm.postVaccineSuccess = false;

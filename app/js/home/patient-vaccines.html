@@ -1,13 +1,13 @@
 <openmrs-breadcrumbs links="vm.links" xmlns="http://www.w3.org/1999/html"></openmrs-breadcrumbs>
 <div id="body-wrapper">
     <patient-header patient-uuid="vm.patientUuid"></patient-header>
-    <div ng-show="vm.errors.length" class="vaccine-container toast-error">
+    <div ng-show="vm.errors.length" class="vaccine-container vaccine-toast-error">
         <span ng-repeat="error in vm.errors">{{ error }}</span>
     </div>
-    <div ng-show="vm.vaccineEncounterErrors.length" class="vaccine-container toast-error">
+    <div ng-show="vm.vaccineEncounterErrors.length" class="vaccine-container vaccine-toast-error">
         <span ng-repeat="error in vm.vaccineEncounterErrors">{{ error }}</span>
     </div>
-    <div ng-if="vm.postVaccineSuccess" class="vaccine-container toast-success">
+    <div ng-if="vm.postVaccineSuccess" class="vaccine-container vaccine-toast-success">
         Thank you, the new added record is saved successfully!
     </div>
     <div class="vaccine-container">
@@ -45,15 +45,15 @@
                                     </td>
                                 </tr>
                                 <tr ng-if="instance.supposedDate">
-                                    <td><span class="vertical-header">Date Expected:</span> {{ instance.supposedDate | moment }}</td>
+                                    <td><span class="vertical-header">Expected on:</span> {{ instance.supposedDate | moment:'ddd, DD-MMM-YYYY' }}</td>
                                     <!--<td>{{ instance.supposedDate | moment }}</td>-->
                                 </tr>
                                 <tr ng-if="!instance.supposedDate">
-                                    <td class="vertical-header">Date Expected: No information</td>
+                                    <td class="vertical-header">Expected on: No information</td>
                                     <!--<td>No information</td>-->
                                 </tr>
                                 <tr ng-if="instance.administered">
-                                    <td class="vertical-header">Date Given: {{ instance.dateGiven | moment }}</td>
+                                    <td class="vertical-header">Given on: {{ instance.dateGiven | moment:'ddd, DD-MMM-YYYY' }}</td>
                                     <!--<td>{{ instance.dateGiven | moment }}</td>-->
                                 </tr>
                             </table>
