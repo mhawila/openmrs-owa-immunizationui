@@ -1,0 +1,26 @@
+<div class="patient-header" ng-class="{ dead: vm.patient.person.dead }">
+    <div ng-if="vm.patient.person.dead" class="death-header">
+        <span class="death-message"> {{ vm.patient.person.deathDate | date }} {{ vm.patient.person.causeOfDeath }} </span>
+        <!--<span class="death-info-extension">-->
+                <!--<%= ui.includeFragment("appui", "extensionPoint", [ id: "patientHeader.deathInfo", contextModel: appContextModel ]) %>-->
+        <!--</span>-->
+    </div>
+
+    <div class="demographics">
+        <h1 class="name">
+            <span class="clickable-name"><span class="PersonName-givenName">{{ vm.patient.person.preferredName.givenName }} </span><em>Given</em> </span>
+            <span class="clickable-name"><span class="PersonName-familyName">{{ vm.patient.person.preferredName.familyName }} </span><em>Family Name</em> </span>
+            &nbsp;
+
+            <span class="gender-age">
+                <span>{{ vm.display.gender }} &nbsp;</span>
+                <span>(Born <span ng-if="vm.patient.person.birthdateEstimated">approximately</span> on {{ vm.patient.person.birthdate | date }}) </span>
+            </span>
+        </h1>
+    </div>
+
+    <div class="identifiers">
+        <em>Patient ID</em>
+        <span>{{ vm.display.identifier.identifier }}</span>
+    </div>
+</div>

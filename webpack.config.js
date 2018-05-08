@@ -150,7 +150,7 @@ function createWebpackConfig(cliArgs) {
     let webpackConfig = {
         entry: {
             app : `${__dirname}/app/js/immunizationui`,
-            css: [`${__dirname}/app/css/immunizationui.css`, `${__dirname}/app/css/modal.css` ],
+            css: [`${__dirname}/app/css/immunizationui.css`, `${__dirname}/app/css/modal.css`, `${__dirname}/app/css/patient-header.scss` ],
             'vendor-css': `${__dirname}/app/css/vendor.css`,
             vendor : [
                 'angular', '@openmrs/openmrs-contrib-uicommons', 'angular-animate'
@@ -176,6 +176,9 @@ function createWebpackConfig(cliArgs) {
             },{
                 test: /\.css$/,
                 use: [ 'style-loader', 'css-loader' ]
+            }, {
+                test: /\.scss$/,
+                use: [ 'style-loader', 'css-loader', 'sass-loader']
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg)$/,
                 use: 'url-loader'
