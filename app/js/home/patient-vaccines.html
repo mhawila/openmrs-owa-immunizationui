@@ -1,6 +1,6 @@
 <openmrs-breadcrumbs links="vm.links" xmlns="http://www.w3.org/1999/html"></openmrs-breadcrumbs>
 <div id="body-wrapper">
-    <h2>Patient Vaccines</h2>
+    <patient-header patient-uuid="vm.patientUuid"></patient-header>
     <div ng-show="vm.errors.length" class="vaccine-container toast-error">
         <span ng-repeat="error in vm.errors">{{ error }}</span>
     </div>

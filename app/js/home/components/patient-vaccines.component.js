@@ -16,6 +16,7 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
 
     let vm = this;
 
+    vm.patientUuid = $stateParams.patientUuid,
     vm.vaccineDateConceptUuid = null;
     vm.saveCancelButtonsDisabled = false;
     vm.newVaccinationRecord = {
