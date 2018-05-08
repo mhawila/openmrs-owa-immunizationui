@@ -117,6 +117,13 @@ function Controller(ImmunizationService, openmrsRest, $stateParams, Utils, VGP) 
                 vm.saveCancelButtonsDisabled = false;
                 vm.postVaccineSuccess = true;
                 document.getElementById('new-vaccination-dialog').click();
+
+                // Add success class to updated row.
+                let updatedElement = document.getElementById(vm.newVaccinationRecord.configuration.uuid);
+                updatedElement.classList.toggle('added-vaccine-success');
+                window.setTimeout(function() {
+                    updatedElement.classList.toggle('added-vaccine-success');
+                }, 10000);
             }).catch(err => {
                 vm.postVaccineSuccess = false;
                 vm.errors.push(err);

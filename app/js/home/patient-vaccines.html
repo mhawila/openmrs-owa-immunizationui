@@ -26,41 +26,41 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tr ng-repeat="config in vm.formatted">
+        <tr ng-repeat="config in vm.formatted" id="{{ config.uuid }}">
             <td>{{ config.name }}</td>
             <td style="display:table-cell; padding: 5px; margin: 0 auto; -webkit-padding-before:0em; -webkit-padding-after: 0em; -webkit-padding-start: 0em; -webkit-padding-end: 0em;">
-            <table class="inner-table">
-                <tr>
-                    <td ng-repeat="instance in config.instances" style="padding:0;">
-                        <!--<div style="border:0 transparent; padding: 3px; margin:0px;">-->
-                        <table class="inner-table-data">
-                            <tr>
-                                <td>
-                                    <span ng-class="{'success-label': instance.administered, 'pending-label': instance.pending, 'missed-label': instance.missed, 'no-info-label': !instance.supposedDate }">
-                                        {{ instance.dose | uppercase }}
-                                        <i ng-if="instance.missed" class="icon-remove-sign"></i>
-                                        <i ng-if="instance.administered" class="icon-ok-sign"></i>
-                                        <i ng-if="instance.pending" class="icon-tag"></i>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr ng-if="instance.supposedDate">
-                                <td><span class="vertical-header">Date Expected:</span> {{ instance.supposedDate | moment }}</td>
-                                <!--<td>{{ instance.supposedDate | moment }}</td>-->
-                            </tr>
-                            <tr ng-if="!instance.supposedDate">
-                                <td class="vertical-header">Date Expected: No information</td>
-                                <!--<td>No information</td>-->
-                            </tr>
-                            <tr ng-if="instance.administered">
-                                <td class="vertical-header">Date Given: {{ instance.dateGiven | moment }}</td>
-                                <!--<td>{{ instance.dateGiven | moment }}</td>-->
-                            </tr>
-                        </table>
-                        <!--</div>-->
-                    </td>
-                </tr>
-            </table>
+                <table class="inner-table">
+                    <tr>
+                        <td ng-repeat="instance in config.instances" style="padding:0;">
+                            <!--<div style="border:0 transparent; padding: 3px; margin:0px;">-->
+                            <table class="inner-table-data">
+                                <tr>
+                                    <td>
+                                        <span ng-class="{'success-label': instance.administered, 'pending-label': instance.pending, 'missed-label': instance.missed, 'no-info-label': !instance.supposedDate }">
+                                            {{ instance.dose | uppercase }}
+                                            <i ng-if="instance.missed" class="icon-remove-sign"></i>
+                                            <i ng-if="instance.administered" class="icon-ok-sign"></i>
+                                            <i ng-if="instance.pending" class="icon-tag"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr ng-if="instance.supposedDate">
+                                    <td><span class="vertical-header">Date Expected:</span> {{ instance.supposedDate | moment }}</td>
+                                    <!--<td>{{ instance.supposedDate | moment }}</td>-->
+                                </tr>
+                                <tr ng-if="!instance.supposedDate">
+                                    <td class="vertical-header">Date Expected: No information</td>
+                                    <!--<td>No information</td>-->
+                                </tr>
+                                <tr ng-if="instance.administered">
+                                    <td class="vertical-header">Date Given: {{ instance.dateGiven | moment }}</td>
+                                    <!--<td>{{ instance.dateGiven | moment }}</td>-->
+                                </tr>
+                            </table>
+                            <!--</div>-->
+                        </td>
+                    </tr>
+                </table>
             </td>
             <td>
                 <button class="fancy-button" ng-click="vm.openRecordDialog(config, newVaccineAdministrationRecord)">

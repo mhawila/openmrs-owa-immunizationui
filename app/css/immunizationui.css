@@ -205,3 +205,13 @@ ul.pagination li.disabled a:hover {
 table tr.deleted {
     background: #f08080;
 }
+
+/*@keyframes blink {*/
+    /*50% { border-color: green; }*/
+/*}*/
+
+.added-vaccine-success {
+    border: 3px double #00b800;
+    background-color: rgba(0, 180, 0, 0.14);
+    transition-duration: 1s;
+}
